@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terrace — строительная компания</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@400;700&family=Jost:wght@300;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ----- Сброс и база ----- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Fira Sans Condensed', sans-serif;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 1530px;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    /* ----- ХЕДЕР ----- */
+    .header {
+      width: 100%;
+      height: 45px;
+      margin-top: 1.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header__left { display: flex; align-items: center; gap: 0.625rem; }
+    .logo { display: flex; align-items: center; gap: 4px; }
+    .logo svg { display: block; }
+    .logo__text {
+      font-weight: 700;
+      font-size: 24px;
+      color: #000;
+      letter-spacing: 1px;
+      margin-left: 5px;
+    }
+    .nav {
+      display: flex;
+      gap: 1.875rem;
+      font-weight: 400;
+      font-size: 16px;
+      color: #000;
+    }
+    .nav a { text-decoration: none; color: inherit; transition: opacity 0.2s; }
+    .nav a:hover { opacity: 0.7; }
+
+    .header__right {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    .phone {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 400;
+      font-size: 1rem;
+      color: #000;
+    }
+    .button--call {
+      background: #C3002F;
+      color: #fff;
+      border: none;
+      padding: 0.812rem 1.625rem;
+      font-family: 'Fira Sans Condensed', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      width: 172px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .button--call:hover { background: #a00028; transform: scale(1.02); }
+    .button--wide {
+      width: 100%;
+      max-width: 181px;
+    }
+
+    /* ----- БАННЕР ----- */
+    .banner {
+      width: 100%;
+      height: 619px;
+      margin-top: 49px;
+      background: #e0e0e0 url('header.jpg') center/cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-left: 8.125rem;
+    }
+    .banner__content { max-width: 600px; color: #ffffff; }
+    .banner__title {
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 60px);
+      line-height: 115%;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+    .banner__subtitle {
+      font-weight: 400;
+      font-size: 1.75rem;
+      line-height: 120%;
+      font-variant: small-caps;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      margin-bottom: 30px;
+    }
+    .banner .button--call {
+      width: 181px;
+      height: 45px;
+      font-size: 0.875rem;
+      padding: 0.812rem 1.625rem;
+    }
+
+    /* ----- КАРТОЧКИ ----- */
+    
+    .cards-section {
+      margin-top: 60px;
+      width: 100%;
+      position: relative;
+    }
+    .cards-section__title {
+      font-weight: 700;
+      font-size: clamp(24px, 3vw, 48px);
+      line-height: 110%;
+      color: #151414;
+      margin-bottom: 40px;
+    }
+    .cards-carousel {
+      position: relative;
+      overflow: visible;
+      width: 100%;
+    }
+    .cards-track {
+      display: flex;
+      gap: 30px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 0.625rem 0 1.25rem 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .cards-track::-webkit-scrollbar { display: none; }
+
+    .card {
+      flex: 0 0 360px;
+      height: 400px;
+      background: #f5f5f5;
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .card__image {
+      width: 360px;
+      height: 370px;
+      background-size: cover;
+      background-position: center;
+    }
+    .card__label {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 226px;
+      height: 84px;
+      background: #C3002F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.125rem;
+      text-align: center;
+      padding: 0 10px;
+      line-height: 1.2;
+    }
+
+    /* Стрелки — только символы ← → */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: #000;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.2s;
+      width: 31px;
+      height: 16px;
+      line-height: 16px;
+      text-align: center;
+    }
+    .arrow:hover { color: #555; }
+    .arrow--left {
+      left: -45px;
+    }
+    .arrow--right {
+      right: -45px;
+    }
+
+    /* ----- КАРТИНКИ ----- */
+    .card__image--card1 {
+      background-image: url('card1.jpg');
+    }
+    .card__image--card2 {
+      background-image: url('card2.jpg');
+    }
+    .card__image--card3 {
+      background-image: url('card3.jpg');
+    }
+    .card__image--card4 {
+      background-image: url('card4.jpg');
+    }
+    .card__image--card5 {
+      background-image: url('card5.jpg');
+    }
+    .card__image--card6 {
+      background-image: url('card6.jpg');
+    }
+    /* ----- ФУТЕР ----- */
+    .footer {
+      width: 100%;
+      background: #151414;
+      margin-top: 80px;
+      padding: 50px 0 40px;
+      color: #DCDCDC;
+    }
+    .footer__columns {
+      display: flex;
+      justify-content: space-between;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .footer__col { flex: 1; min-width: 168px; }
+    .footer__col-title {
+      font-weight: 400;
+      font-size: 1.125rem;
+      line-height: 120%;
+      text-transform: uppercase;
+      color: #DCDCDC;
+      opacity: 0.7;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+    }
+    .footer-col__content {
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #DCDCDC;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-col__content a {
+      color: #DCDCDC;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .footer-col__content a:hover { color: #fff; }
+    .socials {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .socials a {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+    }
+    .socials svg { fill: #DCDCDC; transition: fill 0.2s; }
+    .socials a:hover svg { fill: #ffffff; }
+
+    /* ----- МОДАЛЬНОЕ ОКНО ----- */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .modal {
+      background: #ffffff;
+      width: 470px;
+      max-width: 92%;
+      padding: 60px 60px 40px;
+      position: relative;
+      transform: scale(0.8);
+      transition: transform 0.3s ease;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .overlay.active .modal { transform: scale(1); }
+    .modal__close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: #4A4A4A;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal__close:hover { color: #000; }
+    .modal__title {
+      font-family: 'Fira Sans Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      line-height: 120%;
+      color: #151414;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .modal__subtitle {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 140%;
+      text-align: center;
+      font-variant: small-caps;
+      color: #4A4A4A;
+      margin-bottom: 20px;
+    }
+    .modal__field {
+      width: 100%;
+      height: 44px;
+      border: 1px solid #4A4A4A;
+      margin-bottom: 15px;
+      padding: 0 15px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      font-variant: small-caps;
+      color: #4A4A4A;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal__field:focus { border-color: #C3002F; }
+    .modal__field::placeholder {
+      color: #4A4A4A;
+      opacity: 0.6;
+      font-variant: small-caps;
+    }
+    .modal__agreement {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 140%;
+      font-variant: small-caps;
+      color: #4A4A4A;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .modal__agreement a {
+      text-decoration: underline;
+      color: #4A4A4A;
+    }
+    .modal__btn {
+      width: 179px;
+      height: 45px;
+      background: #C3002F;
+      color: #fff;
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      font-variant: small-caps;
+      padding: 13px 26px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+      transition: background 0.2s;
+    }
+    .modal__btn:hover { background: #a00028; }
+    .modal__error {
+      display: none;
+    }
+    .modal__error--visible {
+      display: block;
+      color: #C3002F;
+      font-size: 13px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      text-align: left;
+      font-family: 'Jost', sans-serif;
+    }
+
+    /* ----- Адаптив ----- */
+    @media (max-width: 1550px) {
+      .container { padding: 0 20px; }
+      .banner { padding-left: 60px; }
+    }
+    @media (max-width: 1024px) {
+      .header {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 15px;
+        margin-top: 15px;
+      }
+      .nav {
+        gap: 15px;
+        font-size: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .header__right {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .banner__title { font-size: 40px; }
+      .banner__subtitle { font-size: 22px; }
+      .cards-section__title { font-size: 36px; }
+      .footer__columns {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .footer__col {
+        min-width: auto;
+        width: 100%;
+        max-width: 300px;
+      }
+      .socials { justify-content: center; }
+      .arrow--left { left: -10px; }
+      .arrow--right { right: -10px; }
+    }
+    @media (max-width: 480px) {
+      .banner { padding-left: 20px; }
+      .banner__title { font-size: 28px; }
+      .banner__subtitle { font-size: 16px; }
+      .card {
+        flex: 0 0 280px;
+        height: 320px;
+      }
+      .card__image {
+        width: 280px;
+        height: 290px;
+      }
+      .card__label {
+        width: 180px;
+        height: 70px;
+        font-size: 14px;
+      }
+      .button--wide {
+        width: 100%;
+        max-width: none;
+      }
+      .modal { padding: 30px 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ХЕДЕР -->
+    <header class="header">
+      <div class="header__left">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M10 15 L30 15 L20 35 L10 15Z" fill="#C3002F" opacity="0.8"/>
+            <path d="M10 25 L30 25 L20 5 L10 25Z" fill="#151414" opacity="0.9"/>
+          </svg>
+          <span class="logo__text">Terrace</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#" class="nav__link">Каталог</a>
+        <a href="#" class="nav__link">Услуги</a>
+        <a href="#" class="nav__link">Наши проекты</a>
+        <a href="#" class="nav__link">Информация</a>
+        <a href="#" class="nav__link">Контакты</a>
+      </nav>
+      <div class="header__right">
+        <div class="phone">
+          <svg class="phone__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span class="phone__number">+7 (913) 567-99-99</span>
+        </div>
+        <button class="button button--call" data-modal-open>Заказать звонок</button>
+      </div>
+    </header>
+    <!-- БАННЕР -->
+  <main>
+    <section class="banner">
+      <div class="banner__content">
+        <h1 class="banner__title">Европейская терраса для вашего дома</h1>
+        <p class="banner__subtitle">Террасная композитная доска в Москве</p>
+        <button class="button button--call button--wide" data-modal-open>Вызвать на замер</button>
+      </div>
+    </section>
+
+    <!-- КАРТОЧКИ -->
+    <section class="cards-section">
+      <h2 class="cards-section__title">Что мы можем сделать для вас</h2>
+      <div class="cards-carousel">
+        <div class="arrow arrow--left" id="arrowLeft">←</div>
+        <div class="arrow arrow--right" id="arrowRight">→</div>
+        <div class="cards-track" id="cardsTrack">
+          <article class="card">
+            <div class="card__image card__image--card1"></div>
+            <div class="card__label">Монтаж декинга</div>
+          </article>
+          <article class="card">
+            <div class="card__image card__image--card2"></div>
+            <div class="card__label">Фасадные работы</div>
+          </article>
+          <article class="card">
+            <div class="card__image card__image--card3"></div>
+            <div class="card__label">Проектные работы</div>
+          </article>
+          <article class="card">
+            <div class="card__image card__image--card4"></div>
+            <div class="card__label">Строительство и благоустройство</div>
+          </article>
+          <article class="card">
+            <div class="card__image card__image--card5"></div>
+            <div class="card__label">Производство и монтаж свай</div>
+          </article>
+          <article class="card">
+            <div class="card__image card__image--card6"></div>
+            <div class="card__label">Индивидуальный дизайн</div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+  <!-- ФУТЕР -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__columns">
+        <div class="footer__col">
+          <h3 class="footer__col-title">РЕКВИЗИТЫ</h3>
+          <div class="footer-col__content">
+            <span>ИНН 123456789</span>
+            <span>ОГРН 1212121212121</span>
+            <span>© ООО «Терраса» 2009 - 2023</span>
+            <a href="#">Политика конфиденциальности</a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h3 class="footer__col-title">КАТАЛОГ</h3>
+          <div class="footer-col__content">
+            <span>Террасная доска из ДПК</span>
+            <span>Террасная доска массив</span>
+            <span>Ступени из ДПК</span>
+            <span>Садовый паркет</span>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h3 class="footer__col-title">УСЛУГИ</h3>
+          <div class="footer-col__content">
+            <span>Фасадные работы</span>
+            <span>Производство свай</span>
+            <span>Монтаж свай</span>
+            <span>Строительство террас</span>
+            <span>Подбор материалов</span>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h3 class="footer__col-title">КОНТАКТЫ</h3>
+          <div class="footer-col__content">
+            <span>г. Город, ул. Улица, д.1.</span>
+            <span>+7 (999) 999-99-19</span>
+            <span>+7 (913) 567-99-99</span>
+            <span>info@terrace.ru</span>
+            <span>Пн — Вс с 08:00 до 22:00</span>
+            <div class="socials">
+              <a href="#"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></a>
+              <a href="#"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></a>
+              <a href="#"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- МОДАЛЬНОЕ ОКНО -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <button class="modal__close" id="modalClose">✕</button>
+      <h2 class="modal__title">Заявка на звонок</h2>
+      <p class="modal__subtitle">Наши менеджеры свяжутся с Вами в ближайшее время и ответят на ваши вопросы!</p>
+      <form id="callForm" novalidate>
+        <input type="text" class="modal__field" id="nameField" placeholder="Введите Ваше имя*" required />
+        <input type="tel" class="modal__field" id="phoneField" placeholder="Введите Ваш телефон*" required />
+        <div id="formError" class="modal__error"></div>
+        <p class="modal__agreement">
+          * Отправляя заявку вы соглашаетесь с <a href="#" class="modal__link">политикой конфиденциальности</a>
+        </p>
+        <button type="submit" class="modal__btn">Отправить заявку</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ----- Стрелки -----
+      const track = document.getElementById('cardsTrack');
+      const leftArrow = document.getElementById('arrowLeft');
+      const rightArrow = document.getElementById('arrowRight');
+      if (track && leftArrow && rightArrow) {
+        const scrollAmount = 390;
+        leftArrow.addEventListener('click', () => {
+          track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        rightArrow.addEventListener('click', () => {
+          track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+
+        function checkArrows() {
+          const parentWidth = track.parentElement.clientWidth;
+          const totalWidth = track.scrollWidth;
+          if (totalWidth <= parentWidth) {
+            leftArrow.style.display = 'none';
+            rightArrow.style.display = 'none';
+          } else {
+            leftArrow.style.display = 'block';
+            rightArrow.style.display = 'block';
+          }
+        }
+        window.addEventListener('resize', checkArrows);
+        checkArrows();
+      }
+
+      // ----- Модалка -----
+      const overlay = document.getElementById('overlay');
+      const callBtn = document.querySelector('[data-modal-open]');
+      const closeBtn = document.getElementById('modalClose');
+      const form = document.getElementById('callForm');
+      const nameField = document.getElementById('nameField');
+      const phoneField = document.getElementById('phoneField');
+      const formError = document.getElementById('formError');
+      
+      const elementList = document.querySelectorAll('[data-modal-open]');
+      elementList.forEach(function(button) {
+        button.addEventListener('click', openModal);
+      });
+
+      function openModal() {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        formError.classList.remove('modal__error--visible');
+        form.reset();
+      }
+      callBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+      });
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        formError.classList.remove('modal__error--visible');
+        formError.textContent = '';
+
+        const name = nameField.value.trim();
+        const phone = phoneField.value.trim();
+        let errors = [];
+        if (!name) errors.push('Укажите имя');
+        if (!phone) errors.push('Укажите телефон');
+        else {
+          const digits = phone.replace(/\D/g, '');
+          if (digits.length < 10) errors.push('Телефон должен содержать минимум 10 цифр');
+        }
+
+        if (errors.length) {
+          formError.textContent = errors.join('. ');
+          formError.classList.add('modal__error--visible');
+          return;
+        }
+
+        alert('✅ Заявка отправлена! Мы свяжемся с вами.');
+        closeModal();
+      });
+
+      nameField.addEventListener('input', () => { formError.classList.remove('modal__error--visible'); });
+      phoneField.addEventListener('input', () => { formError.classList.remove('modal__error--visible'); });
+    })();
+  </script>
+</body>
+</html>
